@@ -188,6 +188,8 @@ SETUP_ARGUMENT_SPEC = dict(
     roworderdragging=dict(required=False, type='bool'),
     logincss=dict(required=False, type='str'),
     loginshowhost=dict(required=False, type='bool'),
+    disablechecksumoffloading=dict(required=False, type='bool'),
+    enablesshd=dict(required=False, type='bool'),
 )
 
 
@@ -326,6 +328,9 @@ class PFSenseSetupModule(PFSenseModuleBase):
 
         _set_param_bool(obj, 'dnsallowoverride')
         _set_param_bool(obj, 'dnslocalhost')
+
+        _set_param_bool(obj, 'disablechecksumoffloading')
+        _set_param_bool(obj, 'enablesshd')
 
         self._dns_params_to_obj(params, obj)
 
@@ -544,6 +549,9 @@ $retval |= system_ntp_configure();'''
         values += self.format_updated_cli_field(webgui, bwebgui, 'roworderdragging', fvalue=self.fvalue_bool, add_comma=(values), log_none=False)
         values += self.format_updated_cli_field(webgui, bwebgui, 'logincss', add_comma=(values), log_none=False)
         values += self.format_updated_cli_field(webgui, bwebgui, 'loginshowhost', fvalue=self.fvalue_bool, add_comma=(values), log_none=False)
+
+        values += self.format_updated_cli_field(webgui, bwebgui, 'disablechecksumoffloading', fvalue=self.fvalue_bool, add_comma=(values), log_none=False)
+        values += self.format_updated_cli_field(webgui, bwebgui, 'enablesshd', fvalue=self.fvalue_bool, add_comma=(values), log_none=False)
 
         return values
 
