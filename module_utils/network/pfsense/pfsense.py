@@ -480,27 +480,28 @@ class PFSenseModule(object):
 
     def find_gateway_elt(self, name, interface=None, protocol=None, dhcp=False, vti=False):
         """ return gateway elt if found """
-        for gw_elt in self.gateways:
-            if gw_elt.tag != 'gateway_item':
-                continue
+        if self.gateways is not None:
+            for gw_elt in self.gateways:
+                if gw_elt.tag != 'gateway_item':
+                    continue
 
-            if protocol is not None and gw_elt.find('ipprotocol').text != protocol:
-                continue
+                if protocol is not None and gw_elt.find('ipprotocol').text != protocol:
+                    continue
 
-            if interface is not None and gw_elt.find('interface').text != interface:
-                continue
+                if interface is not None and gw_elt.find('interface').text != interface:
+                    continue
 
-            if gw_elt.find('name').text == name:
-                return gw_elt
+                if gw_elt.find('name').text == name:
+                    return gw_elt
 
-        for interface_elt in self.interfaces:
-            descr_elt = interface_elt.find('descr')
-            if descr_elt is None or descr_elt.text is None:
-                continue
+            for interface_elt in self.interfaces:
+                descr_elt = interface_elt.find('descr')
+                if descr_elt is None or descr_elt.text is None:
+                    continue
 
-            if_elt = interface_elt.find('if')
-            if if_elt is None or if_elt.text is None:
-                continue
+                if_elt = interface_elt.find('if')
+                if if_elt is None or if_elt.text is None:
+                    continue
 
             descr_text = descr_elt.text.strip().upper()
 
@@ -603,7 +604,7 @@ class PFSenseModule(object):
         if sys.version_info >= (3, 4):
             self.tree.write(tmp_name, xml_declaration=True, method='xml', short_empty_elements=False)
         else:
-            self.tree.write(tmp_name, xml_declaration=True, method='xml')
+            self.tree.write(tmp_name)
         shutil.move(tmp_name, self.config)
         os.chmod(self.config, 0o644)
         try:

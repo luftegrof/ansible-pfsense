@@ -380,6 +380,7 @@ class PFSenseInterfaceModule(PFSenseModuleBase):
     def _get_interface_list(self):
         return self.pfsense.php(
             "require_once('/etc/inc/interfaces.inc');"
+            "require_once('/etc/inc/util.inc');"
             "$portlist = get_interface_list();"
             ""
             "/* add wireless clone interfaces */"
@@ -435,7 +436,7 @@ class PFSenseInterfaceModule(PFSenseModuleBase):
             "$ipsec_descrs = interface_ipsec_vti_list_all();"
             "foreach ($ipsec_descrs as $ifname => $ifdescr) $portlist[$ifname] = array('descr' => $ifdescr);"
             ""
-            "echo json_encode($portlist, JSON_PRETTY_PRINT);")
+            "echo json_encode($portlist);")
 
     def _get_media_mode(self, interface):
         """ Find all possible media options for the interface """
@@ -458,6 +459,9 @@ class PFSenseInterfaceModule(PFSenseModuleBase):
         """ build and return php commands to setup interfaces """
         cmd = 'require_once("filter.inc");\n'
         cmd += 'require_once("interfaces.inc");\n'
+        cmd += 'require_once("util.inc");\n'
+        cmd += 'require_once("vpn.inc");\n'
+        cmd += 'require_once("captiveportal.inc");\n'
         cmd += 'require_once("services.inc");\n'
         cmd += 'require_once("gwlb.inc");\n'
         cmd += 'require_once("rrd.inc");\n'
